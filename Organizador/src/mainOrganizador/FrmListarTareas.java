@@ -5,33 +5,35 @@
  */
 package mainOrganizador;
 
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author CesarCuellar
  */
-public class FrmListarCursos extends javax.swing.JFrame {
+public class FrmListarTareas extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmListarCursos
      */
-    public FrmListarCursos() {
+    public FrmListarTareas() {
         initComponents();
         setLocationRelativeTo(this);
-        listarCursos();
+        listarTareas();
     }
     
-    public void listarCursos(){
-        int cantidad = GestionColegio.listaCursos.size();
-        DefaultTableModel modelo = (DefaultTableModel) tblCursos.getModel();
-        tblCursos.setModel(modelo);
+    public void listarTareas(){
+        ArrayList<Tarea> tareas = EstadoGlobal.TransferencialistadoTareas.leerTareasLista();
+        int cantidad = tareas.size();
+        DefaultTableModel modelo = (DefaultTableModel) tblTareas.getModel();
+        tblTareas.setModel(modelo);
         String[] datos = new String[4];
         for(int i=0;i<cantidad;i++){
-            datos[0]=GestionColegio.listaCursos.get(i).getCodigo();
-            datos[1]=GestionColegio.listaCursos.get(i).getNombre();
-            datos[2]=Integer.toString(GestionColegio.listaCursos.get(i).getHoras());
-            datos[3]=GestionColegio.listaCursos.get(i).getUnDocente().getNombre();
+            datos[0]=String.valueOf(i+1);
+            datos[1]=tareas.get(i).getNombre();
+            datos[2]=tareas.get(i).getDescripcion();
+            datos[3]="01/01/2022";
             modelo.addRow(datos);           
         }
         
@@ -48,22 +50,23 @@ public class FrmListarCursos extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCursos = new javax.swing.JTable();
+        tblTareas = new javax.swing.JTable();
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("LISTA DE CURSOS VIGENTES");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("LISTA DE TAREAS");
 
-        tblCursos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tblCursos.setModel(new javax.swing.table.DefaultTableModel(
+        tblTareas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tblTareas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código Curso", "Nombre", "Duraciópn(Horas)", "Docente"
+                "Pocicion Tarea", "Nombre Tarea", "Descripcion", "Vigencia"
             }
         ) {
             Class[] types = new Class [] {
@@ -74,9 +77,10 @@ public class FrmListarCursos extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblCursos);
+        jScrollPane1.setViewportView(tblTareas);
 
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainOrganizador/Imagenes/exit1.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -87,16 +91,16 @@ public class FrmListarCursos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(btnRegresar)))
-                .addContainerGap(77, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(200, 200, 200))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(186, 186, 186))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,16 +109,18 @@ public class FrmListarCursos extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
+                .addComponent(btnRegresar)
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
+        ListadoTarea frm = new ListadoTarea();
+        frm.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**
@@ -134,20 +140,21 @@ public class FrmListarCursos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmListarCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmListarTareas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmListarCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmListarTareas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmListarCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmListarTareas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmListarCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmListarTareas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmListarCursos().setVisible(true);
+                new FrmListarTareas().setVisible(true);
             }
         });
     }
@@ -156,6 +163,6 @@ public class FrmListarCursos extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblCursos;
+    private javax.swing.JTable tblTareas;
     // End of variables declaration//GEN-END:variables
 }

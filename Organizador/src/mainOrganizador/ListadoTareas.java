@@ -87,7 +87,7 @@ public class ListadoTareas {
      * @return the TotalTareas
      */
     public int getTotalTareas() {
-        return TotalTareas;
+        return this.leerTareasLista().size();
     }
 
     /**
@@ -143,6 +143,7 @@ public class ListadoTareas {
                 e.setId(Integer.parseInt(delimitar.next()));
                 e.setIdLista(Integer.parseInt(delimitar.next()));
                 e.setNombre(delimitar.next());
+                e.setDescripcion(delimitar.next());
                 listaTareas.add(e);
                 this.Tareas = listaTareas;
             }
