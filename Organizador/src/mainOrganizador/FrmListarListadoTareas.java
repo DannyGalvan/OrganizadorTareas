@@ -36,7 +36,7 @@ public final class FrmListarListadoTareas extends javax.swing.JFrame {
         for(int i=0;i<cantidadTareas;i++){
             datos[0]=String.valueOf(lista.get(i).getIdListadoTareas());
             datos[1]=String.valueOf(lista.get(i).getNombreListado());
-            datos[2]=String.valueOf(0);
+            datos[2]=String.valueOf(lista.get(i).getTotalTareas());
             modelo.addRow(datos);            
         }      
     }

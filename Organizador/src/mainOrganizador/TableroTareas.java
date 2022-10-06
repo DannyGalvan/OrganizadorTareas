@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -86,6 +87,32 @@ public class TableroTareas {
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void crearArchivo(ArrayList<ListadoTareas> lista) {
+		FileWriter flwriter = null;
+		try {
+			//crea el flujo para escribir en el archivo
+			flwriter = new FileWriter("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
+                    try ( //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
+                            BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
+                        for (ListadoTareas tareas : lista) {
+                            //escribe los datos en el archivo
+                           bfwriter.write(tareas.getIdListadoTareas() + "," + tareas.getIdTableroTareas()+ "," + tareas.getNombreListado() + "\n");
+                        }
+                        //cierra el buffer intermedio
+                    }
+			System.out.println("Lista creado satisfactoriamente..");
+
+		} catch (IOException e) {
+		} finally {
+			if (flwriter != null) {
+				try {//cierra el flujo principal
+					flwriter.close();
+				} catch (IOException e) {
+				}
+			}
+		}
     }
     
     public ArrayList leerTareasTablero() {
@@ -163,6 +190,20 @@ public class TableroTareas {
         }
     }
     
+    public void eliminarListado(int id){
+        this.Tareas = this.leerTareasTablero();         
+         ListadoTareas listado = this.BuscarListado(id);
+         listado.eliminarTareasLista();
+         this.Tareas.removeIf(x -> x.getIdListadoTareas() == id);
+         ArrayList<ListadoTareas> newList = new ArrayList<>();
+         
+         for(int i=0; i<this.Tareas.size(); i++){
+             ListadoTareas item = this.Tareas.get(i);
+             newList.add(item);
+         }
+         this.crearArchivo(newList);
+     }
+    
     public void modificarTareasTablero(ArrayList<ListadoTareas> lista) {
 		FileWriter flwriter = null;
 		try {
@@ -189,4 +230,11 @@ public class TableroTareas {
 		}
 	}
         
+        public ListadoTareas BuscarListado(int id) {  
+        Optional<ListadoTareas> lista = this.Tareas.stream()
+            .filter(p -> p.getIdListadoTareas() == id)
+            .findFirst();
+        System.out.println("el tablero es: " + lista.get().getNombreListado());
+        return lista.isPresent() ? lista.get() : null;
+    }
 }

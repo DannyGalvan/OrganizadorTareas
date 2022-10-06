@@ -87,7 +87,8 @@ public class ListadoTareas {
      * @return the TotalTareas
      */
     public int getTotalTareas() {
-        return this.leerTareasLista().size();
+        this.TotalTareas = this.leerTareasLista().size();
+        return TotalTareas;
     }
 
     /**
