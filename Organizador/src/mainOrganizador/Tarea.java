@@ -7,6 +7,7 @@ package mainOrganizador;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -22,7 +23,7 @@ public class Tarea {
     private String FechaInicio;
     private String FechaFinal;
     private String Vigencia;
-
+    private ArrayList<ListaActividades> listaActividades = new ArrayList();
     /**
      * @return the Id
      */

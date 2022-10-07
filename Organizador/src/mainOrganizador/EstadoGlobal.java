@@ -11,4 +11,5 @@ package mainOrganizador;
 public class EstadoGlobal {
     public static TableroTareas TransferenciaTablero = new TableroTareas();
     public static ListadoTareas TransferencialistadoTareas = new ListadoTareas();
+    public static Tarea TransferenciaTarea = new Tarea();
 }

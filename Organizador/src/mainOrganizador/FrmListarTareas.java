@@ -5,7 +5,10 @@
  */
 package mainOrganizador;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,24 +20,34 @@ public class FrmListarTareas extends javax.swing.JFrame {
     /**
      * Creates new form FrmListarCursos
      */
-    public FrmListarTareas() {
+    public FrmListarTareas() throws ParseException {
         initComponents();
         setLocationRelativeTo(this);
         listarTareas();
     }
     
-    public void listarTareas(){
+    public void listarTareas() throws ParseException{
         ArrayList<Tarea> tareas = EstadoGlobal.TransferencialistadoTareas.leerTareasLista();
         int cantidad = tareas.size();
         DefaultTableModel modelo = (DefaultTableModel) tblTareas.getModel();
         tblTareas.setModel(modelo);
         String[] datos = new String[6];
         for(int i=0;i<cantidad;i++){
+            String fechafinal = tareas.get(i).getFechaFinal();
             datos[0]=String.valueOf(i+1);
             datos[1]=tareas.get(i).getNombre();
             datos[2]=tareas.get(i).getDescripcion();
             datos[3]=tareas.get(i).getFechaInicio();
             datos[4]=tareas.get(i).getFechaFinal();
+            try{
+                  if (fechafinal.equals("sin datos")) {
+                tareas.get(i).setVigenciaToString(fechafinal);
+                }else{
+                    tareas.get(i).setVigencia(fechafinal);
+                }  
+            }catch(ParseException ex){
+                System.out.println("Error al Parcear Vigencia");
+            }
             datos[5]=tareas.get(i).getVigencia();
             modelo.addRow(datos);           
         }
@@ -77,6 +90,11 @@ public class FrmListarTareas extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        tblTareas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTareasMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblTareas);
@@ -125,6 +143,25 @@ public class FrmListarTareas extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
+    private void tblTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTareasMouseClicked
+        int seleccionar = tblTareas.rowAtPoint(evt.getPoint());  
+        Tarea Transferencia = EstadoGlobal.TransferenciaTarea;
+        Transferencia.setPosicion(Integer.parseInt((String) tblTareas.getValueAt(seleccionar,0)));
+        Transferencia.setNombre(String.valueOf(tblTareas.getValueAt(seleccionar,1)));
+        Transferencia.setDescripcion(String.valueOf(tblTareas.getValueAt(seleccionar,2)));
+        Transferencia.setFechaInicio(String.valueOf(tblTareas.getValueAt(seleccionar,3)));
+        Transferencia.setFechaFinal(String.valueOf(tblTareas.getValueAt(seleccionar,4)));
+        Transferencia.setVigenciaToString(String.valueOf(tblTareas.getValueAt(seleccionar,5)));
+        FrmTarea frm = null;
+        try {
+            frm = new FrmTarea();
+        } catch (ParseException ex) {
+            Logger.getLogger(FrmListarTareas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        frm.setVisible(true);
+        this.setVisible(false);      
+    }//GEN-LAST:event_tblTareasMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -156,7 +193,11 @@ public class FrmListarTareas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmListarTareas().setVisible(true);
+                try {
+                    new FrmListarTareas().setVisible(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(FrmListarTareas.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
