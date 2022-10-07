@@ -6,6 +6,7 @@ package mainOrganizador;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -132,8 +133,10 @@ public class Tarea {
      */
     public void setVigencia(String FechaFinal) throws ParseException {
         SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechahoy = new Date();
+        String fechahoystring = fecha.format(fechahoy);
         Date dt_2 = fecha.parse(FechaFinal);
-        Date dt_1 = new Date();
+        Date dt_1 = fecha.parse(fechahoystring);
         String Vigencia = "";
         if (dt_1.compareTo(dt_2) > 0) {  
             Vigencia = "Vencida"; 

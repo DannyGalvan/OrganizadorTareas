@@ -199,11 +199,16 @@ public class FrmAgregarTarea extends javax.swing.JFrame {
          ListadoTareas listadoTareas = EstadoGlobal.TransferencialistadoTareas;
          int id = EstadoGlobal.TransferencialistadoTareas.getUltimoId();
          int idLista = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();
+         Date inicio = Inicio.getDate();
+         Date fin = Fin.getDate();
          String nombre = txtNombreTarea.getText().trim();
          String descripcion = txtDescripcionTarea.getText().trim();
-         String fechaInicio = fecha.format(Inicio.getCalendar().getTime());
-         String fechaFinal = fecha.format(Fin.getCalendar().getTime());
-         
+         String fechaInicio = "";
+         String fechaFinal = "";
+        if (inicio != null && fin != null) {
+            fechaInicio = fecha.format(Inicio.getCalendar().getTime());
+            fechaFinal = fecha.format(Fin.getCalendar().getTime());
+        }           
          if (!nombre.equals("") && !descripcion.equals("") && !nombre.isBlank() && !descripcion.isBlank() && !nombre.isEmpty() && !descripcion.isEmpty()) {
             ArrayList<Tarea> lista = new ArrayList();
             Tarea tarea = new Tarea();            
@@ -246,6 +251,9 @@ public class FrmAgregarTarea extends javax.swing.JFrame {
                 tarea.setId(id);
                 tarea.setNombre(nombre);
                 tarea.setDescripcion(descripcion);
+                tarea.setFechaInicio("sin datos");
+                tarea.setFechaFinal("sin datos");
+                tarea.setVigenciaToString("sin datos");
                 lista.add(tarea);
                 listadoTareas.aniadirTareasLista(lista);
                 JOptionPane.showMessageDialog(null, "Tarea creada exitosamente!");
