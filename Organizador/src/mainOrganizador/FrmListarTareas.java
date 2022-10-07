@@ -28,12 +28,14 @@ public class FrmListarTareas extends javax.swing.JFrame {
         int cantidad = tareas.size();
         DefaultTableModel modelo = (DefaultTableModel) tblTareas.getModel();
         tblTareas.setModel(modelo);
-        String[] datos = new String[4];
+        String[] datos = new String[6];
         for(int i=0;i<cantidad;i++){
             datos[0]=String.valueOf(i+1);
             datos[1]=tareas.get(i).getNombre();
             datos[2]=tareas.get(i).getDescripcion();
-            datos[3]="01/01/2022";
+            datos[3]=tareas.get(i).getFechaInicio();
+            datos[4]=tareas.get(i).getFechaFinal();
+            datos[5]=tareas.get(i).getVigencia();
             modelo.addRow(datos);           
         }
         
@@ -66,11 +68,11 @@ public class FrmListarTareas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Pocicion Tarea", "Nombre Tarea", "Descripcion", "Vigencia"
+                "Pocicion Tarea", "Nombre Tarea", "Descripcion", "Fecha Inicio", "Fecha Final", "Vigencia"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {

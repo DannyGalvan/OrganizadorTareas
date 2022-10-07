@@ -145,6 +145,9 @@ public class ListadoTareas {
                 e.setIdLista(Integer.parseInt(delimitar.next()));
                 e.setNombre(delimitar.next());
                 e.setDescripcion(delimitar.next());
+                e.setFechaInicio(delimitar.next());
+                e.setFechaFinal(delimitar.next());
+                e.setVigenciaToString(delimitar.next());
                 listaTareas.add(e);
                 this.Tareas = listaTareas;
             }
@@ -174,11 +177,10 @@ public class ListadoTareas {
             try ( BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                 for (Tarea tareas : lista) {
                     //escribe los datos en el archivo
-                    bfwriter.write(tareas.getId() + "," + tareas.getIdLista() + "," + tareas.getNombre() + "," + tareas.getDescripcion() + "\n");
+                    bfwriter.write(tareas.getId() + "," + tareas.getIdLista() + "," + tareas.getNombre() + "," + tareas.getDescripcion() + "," + tareas.getFechaInicio() + "," + tareas.getFechaFinal() + "," + tareas.getVigencia() + "\n");
                 }
             }
             System.out.println("Tareas modificadas satisfactoriamente..");
-
         } catch (IOException e) {
         } finally {
             if (flwriter != null) {
@@ -209,7 +211,7 @@ public class ListadoTareas {
                      BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                 for (Tarea tareas : lista) {
                     //escribe los datos en el archivo
-                    bfwriter.write(tareas.getId() + "," + tareas.getIdLista() + "," + tareas.getNombre() + "\n");
+                    bfwriter.write(tareas.getId() + "," + tareas.getIdLista() + "," + tareas.getNombre() + "," + tareas.getDescripcion() + "," + tareas.getFechaInicio() + "," + tareas.getFechaFinal() + "," + tareas.getVigencia() + "\n");
                 }
                 //cierra el buffer intermedio
             }
