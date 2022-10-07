@@ -51,6 +51,10 @@ public class GestionOrganizadorTareas {
      public static void eliminarTableros(int id){
          listaTableros = OperacionArchivo.leerArchivo();         
          TableroTareas tablero = GestionOrganizadorTareas.BuscarTablero(id);
+         ArrayList<ListadoTareas> listadosTareas = tablero.leerTareasTablero();
+         for(ListadoTareas item : listadosTareas){
+             item.eliminarTareasLista();
+         }
          tablero.eliminarTareasTablero();
          listaTableros.removeIf(x -> x.getIdentificacion() == id);
          ArrayList<TableroTareas> newList = new ArrayList<>();

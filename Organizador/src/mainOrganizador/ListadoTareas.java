@@ -192,10 +192,11 @@ public class ListadoTareas {
 
     public void eliminarTareasLista() {
         File archivo = new File("C:/Organizador/Tareas/" + this.NombreListado + ".txt");
+        System.out.println("eliminacion de tareas de la lista " + this.NombreListado);
         if (archivo.delete()) {
-            System.out.println("El fichero ha sido borrado satisfactoriamente");
+            System.out.println("El fichero de tareas ha sido borrado satisfactoriamente");
         } else {
-            System.out.println("El fichero no puede ser borrado");
+            System.out.println("El fichero de tareas no puede ser borrado");
         }
     }
 

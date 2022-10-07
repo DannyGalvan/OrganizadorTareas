@@ -184,9 +184,9 @@ public class TableroTareas {
     public void eliminarTareasTablero(){
         File archivo = new File("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
         if (archivo.delete()) {
-            System.out.println("El fichero ha sido borrado satisfactoriamente");
+            System.out.println("El fichero de listas ha sido borrado satisfactoriamente");
         }else{
-           System.out.println("El fichero no puede ser borrado");
+           System.out.println("El fichero de listas no puede ser borrado");
         }
     }
     
@@ -203,32 +203,22 @@ public class TableroTareas {
          }
          this.crearArchivo(newList);
      }
-    
-    public void modificarTareasTablero(ArrayList<ListadoTareas> lista) {
-		FileWriter flwriter = null;
-		try {
-			//crea el flujo para escribir en el archivo
-			flwriter = new FileWriter("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
-                    try ( //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
-                            BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
-                        for (ListadoTareas tareas : lista) {
-                            //escribe los datos en el archivo
-                            bfwriter.write(tareas.getIdListadoTareas() + "," + tareas.getIdTableroTareas()+ "," + tareas.getNombreListado() + "\n");
-                        }
-                        //cierra el buffer intermedio
-                    }
-			System.out.println("Lista modificado satisfactoriamente..");
-
-		} catch (IOException e) {
-		} finally {
-			if (flwriter != null) {
-				try {//cierra el flujo principal
-					flwriter.close();
-				} catch (IOException e) {
-				}
-			}
-		}
-	}
+        
+    public void modificarListas(int id, String nombre){
+         Tareas = this.leerTareasTablero();
+         ListadoTareas listado = this.BuscarListado(id);    
+         listado.setNombreListadoTareas(nombre);
+         listado.setNombreListado(nombre);        
+         EstadoGlobal.TransferencialistadoTareas = listado;
+         
+         ArrayList<ListadoTareas> newList = new ArrayList<>();
+         
+         for(int i=0; i<Tareas.size(); i++){
+             ListadoTareas item = Tareas.get(i);
+             newList.add(item);
+         }
+         this.crearArchivo(newList);         
+     }
         
         public ListadoTareas BuscarListado(int id) {  
         Optional<ListadoTareas> lista = this.Tareas.stream()
