@@ -101,7 +101,7 @@ public class FrmModificarListaTareas extends javax.swing.JFrame {
           try{           
             String nombre = jTextField1.getText().trim();
             if (!nombre.isBlank() && !nombre.isEmpty() && nombre.length() > 0) {
-                int id = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();                
+                String id = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();                
                 EstadoGlobal.TransferenciaTablero.modificarListas(id, nombre);
                 JOptionPane.showMessageDialog(null, "Tablero Modificado Con Exito");
                 jTextField1.setText("");

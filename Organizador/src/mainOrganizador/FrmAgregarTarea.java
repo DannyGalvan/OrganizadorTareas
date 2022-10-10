@@ -10,10 +10,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javax.management.Query.gt;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -82,9 +81,10 @@ public class FrmAgregarTarea extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,13 +196,14 @@ public class FrmAgregarTarea extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         try{
          SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+         UUID uuid = UUID.randomUUID();
          ListadoTareas listadoTareas = EstadoGlobal.TransferencialistadoTareas;
-         int id = EstadoGlobal.TransferencialistadoTareas.getUltimoId();
-         int idLista = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();
+         String id = uuid.toString();
+         String idLista = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();
          Date inicio = Inicio.getDate();
          Date fin = Fin.getDate();
-         String nombre = txtNombreTarea.getText().trim();
-         String descripcion = txtDescripcionTarea.getText().trim();
+         String nombre = txtNombreTarea.getText().trim().replaceAll("\\s*\\|\\s*", " pipe operator ");
+         String descripcion = txtDescripcionTarea.getText().trim().replaceAll("\\s*\\|\\s*", " pipe operator ");
          String fechaInicio = "";
          String fechaFinal = "";
         if (inicio != null && fin != null) {

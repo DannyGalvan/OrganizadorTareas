@@ -104,7 +104,7 @@ public class FrmModificarTablero extends javax.swing.JFrame {
          try{           
             String nombre = jTextField2.getText().trim();
             if (!nombre.isBlank() && !nombre.isEmpty() && nombre.length() > 0) {
-                int id = EstadoGlobal.TransferenciaTablero.getIdentificacion();                
+                String id = EstadoGlobal.TransferenciaTablero.getIdentificacion();                
                 GestionOrganizadorTareas.modificarTableros(id, nombre);
                 JOptionPane.showMessageDialog(null, "Tablero Modificado Con Exito");
                 jTextField2.setText("");

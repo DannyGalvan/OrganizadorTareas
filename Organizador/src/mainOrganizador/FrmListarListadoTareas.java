@@ -134,7 +134,7 @@ public final class FrmListarListadoTareas extends javax.swing.JFrame {
     private void tblListadoListaTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListadoListaTareasMouseClicked
         int seleccionar = tblListadoListaTareas.rowAtPoint(evt.getPoint());  
         ListadoTareas Transferencia = EstadoGlobal.TransferencialistadoTareas;
-        Transferencia.setIdListadoTareas(Integer.parseInt((String) tblListadoListaTareas.getValueAt(seleccionar,0)));
+        Transferencia.setIdListadoTareas((String) tblListadoListaTareas.getValueAt(seleccionar,0));
         Transferencia.setNombreListado(String.valueOf(tblListadoListaTareas.getValueAt(seleccionar,1)));
         Transferencia.setTotalTareas(Integer.parseInt(String.valueOf(tblListadoListaTareas.getValueAt(seleccionar,2))));
         ListadoTarea listaTarea = new ListadoTarea();

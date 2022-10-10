@@ -174,7 +174,7 @@ public class Tablero extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-          int id = EstadoGlobal.TransferenciaTablero.getIdentificacion();
+          String id = EstadoGlobal.TransferenciaTablero.getIdentificacion();
           GestionOrganizadorTareas.eliminarTableros(id);  
           FrmPrincipal frm = new FrmPrincipal();
           frm.setVisible(true);     

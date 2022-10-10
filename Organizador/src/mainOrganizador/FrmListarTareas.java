@@ -31,14 +31,15 @@ public class FrmListarTareas extends javax.swing.JFrame {
         int cantidad = tareas.size();
         DefaultTableModel modelo = (DefaultTableModel) tblTareas.getModel();
         tblTareas.setModel(modelo);
-        String[] datos = new String[6];
+        String[] datos = new String[7];
         for(int i=0;i<cantidad;i++){
             String fechafinal = tareas.get(i).getFechaFinal();
             datos[0]=String.valueOf(i+1);
-            datos[1]=tareas.get(i).getNombre();
-            datos[2]=tareas.get(i).getDescripcion();
-            datos[3]=tareas.get(i).getFechaInicio();
-            datos[4]=tareas.get(i).getFechaFinal();
+            datos[1]=tareas.get(i).getId();
+            datos[2]=tareas.get(i).getNombre();
+            datos[3]=tareas.get(i).getDescripcion();
+            datos[4]=tareas.get(i).getFechaInicio();
+            datos[5]=tareas.get(i).getFechaFinal();
             try{
                   if (fechafinal.equals("sin datos")) {
                 tareas.get(i).setVigenciaToString(fechafinal);
@@ -48,7 +49,7 @@ public class FrmListarTareas extends javax.swing.JFrame {
             }catch(ParseException ex){
                 System.out.println("Error al Parcear Vigencia");
             }
-            datos[5]=tareas.get(i).getVigencia();
+            datos[6]=tareas.get(i).getVigencia();
             modelo.addRow(datos);           
         }
         
@@ -81,11 +82,11 @@ public class FrmListarTareas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Pocicion Tarea", "Nombre Tarea", "Descripcion", "Fecha Inicio", "Fecha Final", "Vigencia"
+                "Pocicion Tarea", "Id Tarea", "Nombre Tarea", "Descripcion", "Fecha Inicio", "Fecha Final", "Vigencia"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -147,11 +148,12 @@ public class FrmListarTareas extends javax.swing.JFrame {
         int seleccionar = tblTareas.rowAtPoint(evt.getPoint());  
         Tarea Transferencia = EstadoGlobal.TransferenciaTarea;
         Transferencia.setPosicion(Integer.parseInt((String) tblTareas.getValueAt(seleccionar,0)));
-        Transferencia.setNombre(String.valueOf(tblTareas.getValueAt(seleccionar,1)));
-        Transferencia.setDescripcion(String.valueOf(tblTareas.getValueAt(seleccionar,2)));
-        Transferencia.setFechaInicio(String.valueOf(tblTareas.getValueAt(seleccionar,3)));
-        Transferencia.setFechaFinal(String.valueOf(tblTareas.getValueAt(seleccionar,4)));
-        Transferencia.setVigenciaToString(String.valueOf(tblTareas.getValueAt(seleccionar,5)));
+        Transferencia.setId(String.valueOf(tblTareas.getValueAt(seleccionar,1)));
+        Transferencia.setNombre(String.valueOf(tblTareas.getValueAt(seleccionar,2)));
+        Transferencia.setDescripcion(String.valueOf(tblTareas.getValueAt(seleccionar,3)));
+        Transferencia.setFechaInicio(String.valueOf(tblTareas.getValueAt(seleccionar,4)));
+        Transferencia.setFechaFinal(String.valueOf(tblTareas.getValueAt(seleccionar,5)));
+        Transferencia.setVigenciaToString(String.valueOf(tblTareas.getValueAt(seleccionar,6)));
         FrmTarea frm = null;
         try {
             frm = new FrmTarea();

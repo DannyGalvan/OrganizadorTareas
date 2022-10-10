@@ -6,6 +6,7 @@ package mainOrganizador;
 
 import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 
 /**
@@ -129,8 +130,9 @@ public class FrmAgregarTablero extends javax.swing.JFrame {
 
     private void btnAgregarListadoTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarListadoTareaActionPerformed
        try{
-            int id = GestionOrganizadorTareas.getUltimoId();
-            String nombre = jTextField2.getText().trim();
+           UUID uuid = UUID.randomUUID();
+            String id = uuid.toString();
+            String nombre = jTextField2.getText().trim().replaceAll("\\s*\\|\\s*", " pipe operator ");
             if (!nombre.isBlank() && !nombre.isEmpty() && nombre.length() > 0) {
                TableroTareas oTablero = new TableroTareas();
                 oTablero.setIdentificacion(id);

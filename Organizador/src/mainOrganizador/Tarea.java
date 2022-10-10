@@ -6,7 +6,6 @@ package mainOrganizador;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,8 +14,8 @@ import java.util.Date;
  * @author cgalv
  */
 public class Tarea {
-    private int Id;
-    private int IdLista;
+    private String Id;
+    private String IdLista;
     private String Nombre;
     private String Descripcion;
     private int Posicion;
@@ -27,28 +26,28 @@ public class Tarea {
     /**
      * @return the Id
      */
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
     /**
      * @param Id the Id to set
      */
-    public void setId(int Id) {
+    public void setId(String Id) {
         this.Id = Id;
     }
 
     /**
      * @return the IdLista
      */
-    public int getIdLista() {
+    public String getIdLista() {
         return IdLista;
     }
 
     /**
      * @param IdLista the IdLista to set
      */
-    public void setIdLista(int IdLista) {
+    public void setIdLista(String IdLista) {
         this.IdLista = IdLista;
     }
 
@@ -130,7 +129,6 @@ public class Tarea {
     }
 
     /**
-     * @param Vigencia the Vigencia to set
      */
     public void setVigencia(String FechaFinal) throws ParseException {
         SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");

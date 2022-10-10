@@ -9,10 +9,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -21,8 +20,8 @@ import java.util.Scanner;
  */
 public class ListadoTareas {
 
-    private int IdListadoTareas;
-    private int IdTableroTareas;
+    private String IdListadoTareas;
+    private String IdTableroTareas;
     private String NombreListado;
     private ArrayList<Tarea> Tareas;
     private int TotalTareas;
@@ -30,28 +29,28 @@ public class ListadoTareas {
     /**
      * @return the IdListadoTareas
      */
-    public int getIdListadoTareas() {
+    public String getIdListadoTareas() {
         return IdListadoTareas;
     }
 
     /**
      * @param IdListadoTareas the IdListadoTareas to set
      */
-    public void setIdListadoTareas(int IdListadoTareas) {
+    public void setIdListadoTareas(String IdListadoTareas) {
         this.IdListadoTareas = IdListadoTareas;
     }
 
     /**
      * @return the IdTableroTareas
      */
-    public int getIdTableroTareas() {
+    public String getIdTableroTareas() {
         return IdTableroTareas;
     }
 
     /**
      * @param IdTableroTareas the IdTableroTareas to set
      */
-    public void setIdTableroTareas(int IdTableroTareas) {
+    public void setIdTableroTareas(String IdTableroTareas) {
         this.IdTableroTareas = IdTableroTareas;
     }
 
@@ -97,36 +96,37 @@ public class ListadoTareas {
     public void setTotalTareas(int TotalTareas) {
         this.TotalTareas = TotalTareas;
     }
+    
+    public void crearArchivo(ArrayList<Tarea> lista) {
+		FileWriter flwriter = null;
+		try {
+			//crea el flujo para escribir en el archivo
+			flwriter = new FileWriter("C:/Organizador/Tareas/" + this.IdListadoTareas + ".txt");
+                    try ( //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
+                            BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
+                        for (Tarea tareas : lista) {
+                            //escribe los datos en el archivo
+                           bfwriter.write(tareas.getId() + "|" + tareas.getIdLista() + "|" + tareas.getNombre() + "|" + tareas.getDescripcion() + "|" + tareas.getFechaInicio() + "|" + tareas.getFechaFinal() + "|" + tareas.getVigencia() + "\n");
+                        }
+                        //cierra el buffer intermedio
+                    }
+			System.out.println("Tareas creadas satisfactoriamente..");
 
-    public int getUltimoId() {
-        ArrayList<Tarea> T = this.leerTareasLista();
-        int ultimo = 1;
-
-        if (!T.isEmpty()) {
-            ultimo = T.size() - 1;
-            Tarea L = T.get(ultimo);
-            L.getId();
-            ultimo = L.getId() + 1;
-        }
-
-        return ultimo;
-    }
-
-    public void setNombreListadoTareas(String nombre) {
-        Path source = Paths.get("C:/Organizador/Tareas/" + this.NombreListado + ".txt");
-        System.out.println(source.toAbsolutePath());
-        try {
-            Files.move(source, source.resolveSibling("C:/Organizador/Tareas/" + nombre + ".txt"));
-            System.out.println("Archivo Renombrado con exito");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+		} finally {
+			if (flwriter != null) {
+				try {//cierra el flujo principal
+					flwriter.close();
+				} catch (IOException e) {
+				}
+			}
+		}
     }
 
     public ArrayList leerTareasLista() {
         // crea el flujo para leer desde el archivo
 
-        File file = new File("C:/Organizador/Tareas/" + this.NombreListado + ".txt");
+        File file = new File("C:/Organizador/Tareas/" + this.IdListadoTareas + ".txt");
         ArrayList listaTareas = new ArrayList<Tarea>();
         Scanner scanner;
         try {
@@ -137,12 +137,12 @@ public class ListadoTareas {
                 String linea = scanner.nextLine();
                 Scanner delimitar = new Scanner(linea);
                 //se usa una expresión regular
-                //que valida que antes o despues de una coma (,) exista cualquier cosa
-                //parte la cadena recibida cada vez que encuentre una coma				
-                delimitar.useDelimiter("\\s*,\\s*");
+                //que valida que antes o despues de un pipe (|) exista cualquier cosa
+                //parte la cadena recibida cada vez que encuentre un pipe				
+                delimitar.useDelimiter("\\s*\\|\\s*");
                 Tarea e = new Tarea();
-                e.setId(Integer.parseInt(delimitar.next()));
-                e.setIdLista(Integer.parseInt(delimitar.next()));
+                e.setId(delimitar.next());
+                e.setIdLista(delimitar.next());
                 e.setNombre(delimitar.next());
                 e.setDescripcion(delimitar.next());
                 e.setFechaInicio(delimitar.next());
@@ -173,11 +173,11 @@ public class ListadoTareas {
         }
         FileWriter flwriter = null;
         try {//además de la ruta del archivo recibe un parámetro de tipo boolean, que le indican que se va añadir más registros 
-            flwriter = new FileWriter("C:/Organizador/Tareas/" + this.NombreListado + ".txt", true);
+            flwriter = new FileWriter("C:/Organizador/Tareas/" + this.IdListadoTareas + ".txt", true);
             try ( BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                 for (Tarea tareas : lista) {
                     //escribe los datos en el archivo
-                    bfwriter.write(tareas.getId() + "," + tareas.getIdLista() + "," + tareas.getNombre() + "," + tareas.getDescripcion() + "," + tareas.getFechaInicio() + "," + tareas.getFechaFinal() + "," + tareas.getVigencia() + "\n");
+                    bfwriter.write(tareas.getId() + "|" + tareas.getIdLista() + "|" + tareas.getNombre() + "|" + tareas.getDescripcion() + "|" + tareas.getFechaInicio() + "|" + tareas.getFechaFinal() + "|" + tareas.getVigencia() + "\n");
                 }
             }
             System.out.println("Tareas modificadas satisfactoriamente..");
@@ -193,7 +193,7 @@ public class ListadoTareas {
     }
 
     public void eliminarTareasLista() {
-        File archivo = new File("C:/Organizador/Tareas/" + this.NombreListado + ".txt");
+        File archivo = new File("C:/Organizador/Tareas/" + this.IdListadoTareas + ".txt");
         System.out.println("eliminacion de tareas de la lista " + this.NombreListado);
         if (archivo.delete()) {
             System.out.println("El fichero de tareas ha sido borrado satisfactoriamente");
@@ -206,12 +206,12 @@ public class ListadoTareas {
         FileWriter flwriter = null;
         try {
             //crea el flujo para escribir en el archivo
-            flwriter = new FileWriter("C:/Organizador/Tareas/" + this.NombreListado + ".txt");
+            flwriter = new FileWriter("C:/Organizador/Tareas/" + this.IdListadoTareas + ".txt");
             try ( //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
                      BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                 for (Tarea tareas : lista) {
                     //escribe los datos en el archivo
-                    bfwriter.write(tareas.getId() + "," + tareas.getIdLista() + "," + tareas.getNombre() + "," + tareas.getDescripcion() + "," + tareas.getFechaInicio() + "," + tareas.getFechaFinal() + "," + tareas.getVigencia() + "\n");
+                    bfwriter.write(tareas.getId() + "|" + tareas.getIdLista() + "|" + tareas.getNombre() + "|" + tareas.getDescripcion() + "|" + tareas.getFechaInicio() + "|" + tareas.getFechaFinal() + "|" + tareas.getVigencia() + "\n");
                 }
                 //cierra el buffer intermedio
             }
@@ -226,6 +226,37 @@ public class ListadoTareas {
                 }
             }
         }
+    }
+    
+     public void modificarListas(String id, String nombre, String descripcion, String fechainicio, String fechafinal,String vigencia) throws ParseException{
+         Tarea tarea = this.BuscarTarea(id);    
+         tarea.setNombre(nombre);
+         tarea.setFechaInicio(fechainicio);
+         tarea.setFechaFinal(fechafinal);
+         tarea.setNombre(nombre);
+         tarea.setDescripcion(descripcion);
+         if (vigencia.equals("sin datos")) {
+             tarea.setVigenciaToString(vigencia);
+         }else{
+              tarea.setVigencia(fechafinal);
+         }        
+         EstadoGlobal.TransferenciaTarea = tarea;
+         
+         ArrayList<Tarea> newList = new ArrayList<>();
+         
+         for(int i=0; i<Tareas.size(); i++){
+             Tarea item = Tareas.get(i);
+             newList.add(item);
+         }
+         this.crearArchivo(newList);         
+     }
+     
+      public Tarea BuscarTarea(String id) {  
+        Optional<Tarea> lista = this.Tareas.stream()
+            .filter(p -> p.getId().equals(id))
+            .findFirst();
+        System.out.println("la tarea es: " + lista.get().getNombre());
+        return lista.isPresent() ? lista.get() : null;
     }
 
    

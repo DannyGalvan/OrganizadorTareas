@@ -8,6 +8,7 @@ package mainOrganizador;
 
 import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 
 /**
@@ -126,9 +127,10 @@ public class FrmAgregarListadoTareas extends javax.swing.JFrame {
      * @param evt 
      */
     private void btnAgregarTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTareaActionPerformed
-        String nombre = txtNombre.getText().trim();
-        int id = EstadoGlobal.TransferenciaTablero.getIdentificacion();
-        int idTablero = EstadoGlobal.TransferenciaTablero.getUltimoId();
+        UUID uuid = UUID.randomUUID();
+        String idTablero = uuid.toString();
+        String nombre = txtNombre.getText().trim().replaceAll("\\s*\\|\\s*", " pipe operator ");
+        String id = EstadoGlobal.TransferenciaTablero.getIdentificacion();
         try {    
             if (!nombre.isEmpty() && !nombre.isBlank() && nombre.length() >= 0) {
                 ArrayList<ListadoTareas> lista = new ArrayList();

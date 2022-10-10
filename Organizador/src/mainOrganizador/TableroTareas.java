@@ -9,9 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -22,16 +19,16 @@ import java.util.Scanner;
  */
 public class TableroTareas {
     
-    private int Identificacion;
+    private String Identificacion;
     private String Nombre;
     private ArrayList<ListadoTareas> Tareas = new ArrayList();
     private int TotalTareas;
     
-    public int getIdentificacion() {
+    public String getIdentificacion() {
         return this.Identificacion;
     }
 
-    public void setIdentificacion(int identificacion) {
+    public void setIdentificacion(String identificacion) {
         this.Identificacion = identificacion;
     }
 
@@ -64,41 +61,16 @@ public class TableroTareas {
         this.TotalTareas = totalTareas;
     }
     
-    public int getUltimoId(){
-        ArrayList<ListadoTareas> T = this.leerTareasTablero();
-        int ultimo = 1;
-        
-        if (!T.isEmpty()) {
-            ultimo = T.size() - 1;
-            ListadoTareas L = T.get(ultimo);        
-            L.getIdListadoTareas();
-            ultimo = L.getIdListadoTareas() + 1;
-        }
-        
-        return ultimo;        
-    }
-    
-    public void setNombreTareasTablero(String nombre){     
-         Path source = Paths.get("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
-         System.out.println(source.toAbsolutePath());
-        try{                 
-           Files.move(source, source.resolveSibling("C:/Organizador/ListaTareas/" + nombre + ".txt"));
-            System.out.println("Archivo Renombrado con exito");
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void crearArchivo(ArrayList<ListadoTareas> lista) {
 		FileWriter flwriter = null;
 		try {
 			//crea el flujo para escribir en el archivo
-			flwriter = new FileWriter("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
+			flwriter = new FileWriter("C:/Organizador/ListaTareas/" + this.Identificacion + ".txt");
                     try ( //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
                             BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                         for (ListadoTareas tareas : lista) {
                             //escribe los datos en el archivo
-                           bfwriter.write(tareas.getIdListadoTareas() + "," + tareas.getIdTableroTareas()+ "," + tareas.getNombreListado() + "\n");
+                           bfwriter.write(tareas.getIdListadoTareas() + "|" + tareas.getIdTableroTareas()+ "|" + tareas.getNombreListado() + "\n");
                         }
                         //cierra el buffer intermedio
                     }
@@ -118,7 +90,7 @@ public class TableroTareas {
     public ArrayList leerTareasTablero() {
 		// crea el flujo para leer desde el archivo
                            
-		File file = new File("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
+		File file = new File("C:/Organizador/ListaTareas/" + this.Identificacion + ".txt");
 		ArrayList listaTareas= new ArrayList<ListadoTareas>();	
 		Scanner scanner;
 		try {
@@ -131,10 +103,10 @@ public class TableroTareas {
 				//se usa una expresión regular
 				//que valida que antes o despues de una coma (,) exista cualquier cosa
 				//parte la cadena recibida cada vez que encuentre una coma				
-				delimitar.useDelimiter("\\s*,\\s*");
+				delimitar.useDelimiter("\\s*\\|\\s*");
 				ListadoTareas e = new ListadoTareas();
-                                e.setIdListadoTareas(Integer.parseInt(delimitar.next()));
-                                e.setIdTableroTareas(Integer.parseInt(delimitar.next()));
+                                e.setIdListadoTareas(delimitar.next());
+                                e.setIdTableroTareas(delimitar.next());
                                 e.setNombreListado(delimitar.next());
 				listaTareas.add(e);
                                 this.Tareas = listaTareas;
@@ -161,11 +133,11 @@ public class TableroTareas {
                }      
             FileWriter flwriter = null;
             try {//además de la ruta del archivo recibe un parámetro de tipo boolean, que le indican que se va añadir más registros 
-                    flwriter = new FileWriter("C:/Organizador/ListaTareas/" + this.Nombre + ".txt", true);
+                    flwriter = new FileWriter("C:/Organizador/ListaTareas/" + this.Identificacion + ".txt", true);
                 try (BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                     for (ListadoTareas tareas : lista) {
                         //escribe los datos en el archivo
-                        bfwriter.write(tareas.getIdListadoTareas() + "," + tareas.getIdTableroTareas()+ "," + tareas.getNombreListado() + "\n");
+                        bfwriter.write(tareas.getIdListadoTareas() + "|" + tareas.getIdTableroTareas()+ "|" + tareas.getNombreListado() + "\n");
                     }
                 }
                     System.out.println("Listas modificadas satisfactoriamente..");
@@ -182,7 +154,7 @@ public class TableroTareas {
     }
     
     public void eliminarTareasTablero(){
-        File archivo = new File("C:/Organizador/ListaTareas/" + this.Nombre + ".txt");
+        File archivo = new File("C:/Organizador/ListaTareas/" + this.Identificacion + ".txt");
         if (archivo.delete()) {
             System.out.println("El fichero de listas ha sido borrado satisfactoriamente");
         }else{
@@ -190,11 +162,11 @@ public class TableroTareas {
         }
     }
     
-    public void eliminarListado(int id){
+    public void eliminarListado(String id){
         this.Tareas = this.leerTareasTablero();         
          ListadoTareas listado = this.BuscarListado(id);
          listado.eliminarTareasLista();
-         this.Tareas.removeIf(x -> x.getIdListadoTareas() == id);
+         this.Tareas.removeIf(x -> x.getIdListadoTareas().equals(id));
          ArrayList<ListadoTareas> newList = new ArrayList<>();
          
          for(int i=0; i<this.Tareas.size(); i++){
@@ -204,10 +176,9 @@ public class TableroTareas {
          this.crearArchivo(newList);
      }
         
-    public void modificarListas(int id, String nombre){
+    public void modificarListas(String id, String nombre){
          Tareas = this.leerTareasTablero();
          ListadoTareas listado = this.BuscarListado(id);    
-         listado.setNombreListadoTareas(nombre);
          listado.setNombreListado(nombre);        
          EstadoGlobal.TransferencialistadoTareas = listado;
          
@@ -220,9 +191,9 @@ public class TableroTareas {
          this.crearArchivo(newList);         
      }
         
-        public ListadoTareas BuscarListado(int id) {  
+        public ListadoTareas BuscarListado(String id) {  
         Optional<ListadoTareas> lista = this.Tareas.stream()
-            .filter(p -> p.getIdListadoTareas() == id)
+            .filter(p -> p.getIdListadoTareas().equals(id))
             .findFirst();
         System.out.println("el tablero es: " + lista.get().getNombreListado());
         return lista.isPresent() ? lista.get() : null;

@@ -231,6 +231,11 @@ public class FrmTarea extends javax.swing.JFrame {
         );
 
         jButton2.setText("Modificar esta tarea");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eliminar esta tarea");
 
@@ -336,6 +341,12 @@ public class FrmTarea extends javax.swing.JFrame {
         frm.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        FrmModificarTarea frm = new FrmModificarTarea();
+        frm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

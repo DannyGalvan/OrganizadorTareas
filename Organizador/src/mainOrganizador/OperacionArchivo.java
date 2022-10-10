@@ -28,7 +28,7 @@ public class OperacionArchivo {
                             BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                         for (TableroTareas tablero : lista) {
                             //escribe los datos en el archivo
-                            bfwriter.write(tablero.getIdentificacion() + "," + tablero.getNombre() + "," + tablero.countTareas() + "\n");
+                            bfwriter.write(tablero.getIdentificacion() + "|" + tablero.getNombre() + "|" + tablero.countTareas() + "\n");
                         }
                         //cierra el buffer intermedio
                     }
@@ -61,9 +61,9 @@ public class OperacionArchivo {
 				//se usa una expresión regular
 				//que valida que antes o despues de una coma (,) exista cualquier cosa
 				//parte la cadena recibida cada vez que encuentre una coma				
-				delimitar.useDelimiter("\\s*,\\s*");
+				delimitar.useDelimiter("\\s*\\|\\s*");
 				TableroTareas e = new TableroTareas();
-				e.setIdentificacion(Integer.parseInt(delimitar.next()));
+				e.setIdentificacion(delimitar.next());
 				e.setNombre(delimitar.next());
 				e.setTotalTareas(Integer.parseInt(delimitar.next()));
 				listaTableros.add(e);
@@ -101,7 +101,7 @@ public class OperacionArchivo {
                     try (BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
                         for (TableroTareas tablero : lista) {
                             //escribe los datos en el archivo
-                            bfwriter.write(tablero.getIdentificacion() + "," + tablero.getNombre() + "," + tablero.countTareas() + "\n");
+                            bfwriter.write(tablero.getIdentificacion() + "|" + tablero.getNombre() + "|" + tablero.countTareas() + "\n");
                         }
                     }
 			System.out.println("Archivo modificado satisfactoriamente..");

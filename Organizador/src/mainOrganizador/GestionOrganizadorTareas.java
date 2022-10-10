@@ -23,20 +23,6 @@ import java.util.Set;
 public class GestionOrganizadorTareas {
      public static ArrayList<TableroTareas> listaTableros = new ArrayList<>();
      
-     
-      public static int getUltimoId(){
-        ArrayList<TableroTareas> T = traerTableros();
-        int ultimo = 1;
-        
-        if (!T.isEmpty()) {
-            ultimo = T.size() - 1;
-            TableroTareas TT = T.get(ultimo);        
-            ultimo = TT.getIdentificacion() + 1;
-        }
-        
-        return ultimo;        
-    }
-    
      public static void agregarTableros(TableroTareas oTablero){
         ArrayList<TableroTareas> newTablero = new ArrayList<>();
         newTablero.add(oTablero);
@@ -48,7 +34,7 @@ public class GestionOrganizadorTareas {
          return listaTableros;
      }
      
-     public static void eliminarTableros(int id){
+     public static void eliminarTableros(String id){
          listaTableros = OperacionArchivo.leerArchivo();         
          TableroTareas tablero = GestionOrganizadorTareas.BuscarTablero(id);
          ArrayList<ListadoTareas> listadosTareas = tablero.leerTareasTablero();
@@ -56,7 +42,7 @@ public class GestionOrganizadorTareas {
              item.eliminarTareasLista();
          }
          tablero.eliminarTareasTablero();
-         listaTableros.removeIf(x -> x.getIdentificacion() == id);
+         listaTableros.removeIf(x -> x.getIdentificacion().equals(id));
          ArrayList<TableroTareas> newList = new ArrayList<>();
          
          for(int i=0; i<listaTableros.size(); i++){
@@ -66,10 +52,9 @@ public class GestionOrganizadorTareas {
          OperacionArchivo.crearArchivo(newList);
      }
      
-     public static void modificarTableros(int id, String nombre){
+     public static void modificarTableros(String id, String nombre){
          listaTableros = OperacionArchivo.leerArchivo();
-         TableroTareas tablero = GestionOrganizadorTareas.BuscarTablero(id);        
-         tablero.setNombreTareasTablero(nombre);
+         TableroTareas tablero = GestionOrganizadorTareas.BuscarTablero(id);
          tablero.setNombre(nombre);
          EstadoGlobal.TransferenciaTablero = tablero;
          
@@ -77,7 +62,6 @@ public class GestionOrganizadorTareas {
          
          for(int i=0; i<listaTableros.size(); i++){
              TableroTareas item = listaTableros.get(i);
-             item.setIdentificacion(i+1);
              newList.add(item);
          }
          OperacionArchivo.crearArchivo(newList);         
@@ -88,9 +72,9 @@ public class GestionOrganizadorTareas {
          return listaTableros.size();
      }
       
-    public static TableroTareas BuscarTablero(int id) {  
+    public static TableroTareas BuscarTablero(String id) {  
         Optional<TableroTareas> tablero = listaTableros.stream()
-            .filter(p -> p.getIdentificacion() == id)
+            .filter(p -> p.getIdentificacion().equals(id))
             .findFirst();
         System.out.println("el tablero es: " + tablero.get().getNombre());
         return tablero.isPresent() ? tablero.get() : null;

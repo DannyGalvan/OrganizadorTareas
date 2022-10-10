@@ -1,5 +1,8 @@
 package mainOrganizador;
 
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -164,14 +167,19 @@ public class ListadoTarea extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        FrmListarTareas frm = new FrmListarTareas();
+        FrmListarTareas frm = null;
+       try {
+           frm = new FrmListarTareas();
+       } catch (ParseException ex) {
+           Logger.getLogger(ListadoTarea.class.getName()).log(Level.SEVERE, null, ex);
+       }
         frm.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         EstadoGlobal.TransferencialistadoTareas.eliminarTareasLista();
-        int id = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();
+        String id = EstadoGlobal.TransferencialistadoTareas.getIdListadoTareas();
         EstadoGlobal.TransferenciaTablero.eliminarListado(id);
         Tablero frm = new Tablero();
         frm.setVisible(true);     

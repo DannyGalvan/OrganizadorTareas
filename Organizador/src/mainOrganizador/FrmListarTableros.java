@@ -109,7 +109,7 @@ public class FrmListarTableros extends javax.swing.JFrame {
     private void tblTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTareasMouseClicked
         int seleccionar = tblTareas.rowAtPoint(evt.getPoint());  
         TableroTareas Transferencia = EstadoGlobal.TransferenciaTablero;
-        Transferencia.setIdentificacion(Integer.parseInt((String) tblTareas.getValueAt(seleccionar,0)));
+        Transferencia.setIdentificacion((String) tblTareas.getValueAt(seleccionar,0));
         Transferencia.setNombre(String.valueOf(tblTareas.getValueAt(seleccionar,1)));
         Transferencia.setTotalTareas(Integer.parseInt(String.valueOf(tblTareas.getValueAt(seleccionar,2))));
         Tablero tableroTareas = new Tablero();
