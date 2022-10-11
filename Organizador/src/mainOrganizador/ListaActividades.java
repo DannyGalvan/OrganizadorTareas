@@ -9,51 +9,51 @@ package mainOrganizador;
  * @author cgalv
  */
 public class ListaActividades {
-    private int idLista;
-    private int idTarea;
-    private int idTablero;
+    private String idLista;
+    private String idTarea;
+    private String idTablero;
     private String NombreLista;
     private Float Porcentaje;
 
     /**
      * @return the idLista
      */
-    public int getIdLista() {
+    public String getIdLista() {
         return idLista;
     }
 
     /**
      * @param idLista the idLista to set
      */
-    public void setIdLista(int idLista) {
+    public void setIdLista(String idLista) {
         this.idLista = idLista;
     }
 
     /**
      * @return the idTarea
      */
-    public int getIdTarea() {
+    public String getIdTarea() {
         return idTarea;
     }
 
     /**
      * @param idTarea the idTarea to set
      */
-    public void setIdTarea(int idTarea) {
+    public void setIdTarea(String idTarea) {
         this.idTarea = idTarea;
     }
 
     /**
      * @return the idTablero
      */
-    public int getIdTablero() {
+    public String getIdTablero() {
         return idTablero;
     }
 
     /**
      * @param idTablero the idTablero to set
      */
-    public void setIdTablero(int idTablero) {
+    public void setIdTablero(String idTablero) {
         this.idTablero = idTablero;
     }
 
@@ -84,5 +84,6 @@ public class ListaActividades {
     public void setPorcentaje(Float Porcentaje) {
         this.Porcentaje = Porcentaje;
     }
-    
+
+   
 }

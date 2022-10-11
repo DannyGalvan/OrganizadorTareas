@@ -4,10 +4,17 @@
  */
 package mainOrganizador;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
+import java.util.Scanner;
 
 /**
  *
@@ -154,6 +161,131 @@ public class Tarea {
     
     public void setVigenciaToString(String Vigencia){
           this.Vigencia = Vigencia;
+    }
+    
+     public void crearArchivo(ArrayList<ListaActividades> lista) {
+		FileWriter flwriter = null;
+		try {
+			//crea el flujo para escribir en el archivo
+			flwriter = new FileWriter("C:/Organizador/ListaActividades/" + this.Id + ".txt");
+                    try ( //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
+                            BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
+                        for (ListaActividades actividades : lista) {
+                            //escribe los datos en el archivo
+                           bfwriter.write(actividades.getIdLista() + "|" + actividades.getIdTarea() + "|" + actividades.getIdTablero() + "|" + actividades.getNombreLista() + "|" + actividades.getPorcentaje() + "\n");
+                        }
+                        //cierra el buffer intermedio
+                    }
+			System.out.println("Lista de actividades creadas satisfactoriamente..");
+
+		} catch (IOException e) {
+		} finally {
+			if (flwriter != null) {
+				try {//cierra el flujo principal
+					flwriter.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+    }
+
+    public ArrayList leerTareasLista() {
+        // crea el flujo para leer desde el archivo
+
+        File file = new File("C:/Organizador/ListaActividades/" + this.Id + ".txt");
+        ArrayList listaTareas = new ArrayList<ListaActividades>();
+        Scanner scanner;
+        try {
+            //se pasa el flujo al objeto scanner
+            scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                // el objeto scanner lee linea a linea desde el archivo
+                String linea = scanner.nextLine();
+                Scanner delimitar = new Scanner(linea);
+                //se usa una expresión regular
+                //que valida que antes o despues de un pipe (|) exista cualquier cosa
+                //parte la cadena recibida cada vez que encuentre un pipe				
+                delimitar.useDelimiter("\\s*\\|\\s*");
+                ListaActividades e = new ListaActividades();
+                e.setIdLista(delimitar.next());
+                e.setIdTarea(delimitar.next());
+                e.setIdTablero(delimitar.next());
+                e.setNombreLista(delimitar.next());
+                e.setPorcentaje(Float.parseFloat(delimitar.next()));
+                listaTareas.add(e);                
+            }
+            this.listaActividades = listaTareas;
+            //se cierra el ojeto scanner
+            scanner.close();
+            System.out.println("Lista actividades leidas satisfactoriamente..");
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+            this.listaActividades = new ArrayList<ListaActividades>();
+        }
+        return listaActividades;
+    }
+
+    //añadir más tareas al archivo
+    public void aniadirTareasLista(ArrayList<ListaActividades> lista) {
+        File directorio = new File("C:/Organizador/ListaActividades");
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                System.out.println("Directorio creado");
+            } else {
+                System.out.println("Error al crear directorio");
+            }
+        }
+        FileWriter flwriter = null;
+        try {//además de la ruta del archivo recibe un parámetro de tipo boolean, que le indican que se va añadir más registros 
+            flwriter = new FileWriter("C:/Organizador/ListaActividades/" + this.Id + ".txt", true);
+            try ( BufferedWriter bfwriter = new BufferedWriter(flwriter)) {
+                for (ListaActividades actividades : lista) {
+                    //escribe los datos en el archivo
+                    bfwriter.write(actividades.getIdLista() + "|" + actividades.getIdTarea() + "|" + actividades.getIdTablero() + "|" + actividades.getNombreLista() + "|" + actividades.getPorcentaje() + "\n");
+                }
+            }
+            System.out.println("Lista de actividades modificadas satisfactoriamente..");
+        } catch (IOException e) {
+        } finally {
+            if (flwriter != null) {
+                try {
+                    flwriter.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
+
+    public void eliminarTareasLista() {
+        File archivo = new File("C:/Organizador/ListaActividades/" + this.Id + ".txt");
+        System.out.println("eliminacion de tareas de la lista " + this.Nombre);
+        if (archivo.delete()) {
+            System.out.println("El fichero de listas de actividades ha sido borrado satisfactoriamente");
+        } else {
+            System.out.println("El fichero de listas de actividades no puede ser borrado");
+        }
+    }
+    
+     public void modificarListas(String id, String nombre){
+         ListaActividades lista = this.BuscarLista(id);    
+         lista.setNombreLista(nombre);        
+         EstadoGlobal.TransferenciaListadoActividades = lista;
+         
+         ArrayList<ListaActividades> newList = new ArrayList<>();
+         
+         for(int i=0; i<listaActividades.size(); i++){
+             ListaActividades item = listaActividades.get(i);
+             newList.add(item);
+         }
+         this.crearArchivo(newList);         
+     }
+     
+      public ListaActividades BuscarLista(String id) {  
+        Optional<ListaActividades> lista = this.listaActividades.stream()
+            .filter(p -> p.getIdLista().equals(id))
+            .findFirst();
+        System.out.println("la lista de actividades es: " + lista.get().getNombreLista());
+        return lista.isPresent() ? lista.get() : null;
     }
     
     

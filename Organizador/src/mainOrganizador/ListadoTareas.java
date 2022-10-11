@@ -251,6 +251,19 @@ public class ListadoTareas {
          this.crearArchivo(newList);         
      }
      
+      public void eliminarTarea(String id){       
+         Tarea tarea = this.BuscarTarea(id);
+         tarea.eliminarTareasLista();
+         this.Tareas.removeIf(x -> x.getId().equals(id));
+         ArrayList<Tarea> newList = new ArrayList<>();
+         
+         for(int i=0; i<this.Tareas.size(); i++){
+             Tarea item = this.Tareas.get(i);
+             newList.add(item);
+         }
+         this.crearArchivo(newList);
+     }
+     
       public Tarea BuscarTarea(String id) {  
         Optional<Tarea> lista = this.Tareas.stream()
             .filter(p -> p.getId().equals(id))
